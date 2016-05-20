@@ -53,9 +53,4 @@ public class RunningState : PlayerState {
 	{
 		player.Move ();
 	}
-
-	void LateUpdate ()
-	{
-		
-	}
 }

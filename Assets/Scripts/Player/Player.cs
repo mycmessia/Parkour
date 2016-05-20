@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Networking;
 
 public enum States {
 	Preparing,
@@ -12,7 +13,7 @@ public enum States {
 	Sliding
 };
 
-public class Player : MonoBehaviour {
+public class Player : NetworkBehaviour {
 
 	public States m_currentState;
 
@@ -39,6 +40,12 @@ public class Player : MonoBehaviour {
 
         moveZspeed = Config.MOVE_SPEED;
         moveYspeed = 0;
+	}
+
+	public override void OnStartLocalPlayer ()
+	{
+		CameraFollow cameraFollow = Camera.main.GetComponent <CameraFollow> ();
+		cameraFollow.SetTarget (transform);
 	}
 
 	public States GetCurState ()
