@@ -99,9 +99,9 @@ public class Player : NetworkBehaviour {
         if (model.localPosition.y > 0f)
         {
             moveYspeed -= Config.GRAVITY * Time.deltaTime;
+			moveVector.y = 0f;
         }
-
-        if (!controller.isGrounded)
+		else if (!controller.isGrounded)
         {
             moveVector.y -= 1.5f * Time.deltaTime;
         }

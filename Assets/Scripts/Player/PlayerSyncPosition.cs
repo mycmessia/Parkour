@@ -4,13 +4,15 @@ using UnityEngine.Networking;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
-[NetworkSettings (channel = 0, sendInterval = 0.033f)]
 public class PlayerSyncPosition : NetworkBehaviour {
 
     [SyncVar (hook = "SyncPositionValues")]   // 这个符号代表这个变量Server要不断向Client同步
 	private Vector3 syncPos;
+	[SyncVar (hook = "SyncModelLocalPositionValues")]
+	private Vector3 syncModelLocalPos;
 
 	[SerializeField] Transform myTransform;
+	[SerializeField] Transform modelTransform;
 	private float lerpRate;
     private float normalLerpRate = 15;
     private float fastLerpRate = 25;
@@ -18,6 +20,7 @@ public class PlayerSyncPosition : NetworkBehaviour {
     // 这是一个对Command方法的优化，当玩家移动超过这个值后才更新syncPos
     // 每一个联入Server的Client都会调用主机端的Command方法，这样随着联入的机器增加会给Server端很大压力
     private Vector3 lastPos;
+	private Vector3 lastModelLocalPos;
     private float threshold = 0.1f;
 
     private NetworkClient nClient;
@@ -69,14 +72,26 @@ public class PlayerSyncPosition : NetworkBehaviour {
         syncPos = pos;
     }
 
+	[Command]
+	void CmdProvideModelLocalPosToServer (Vector3 pos)
+	{
+		syncModelLocalPos = pos;
+	}
+
     [ClientCallback]
     void TransmitPosition ()
     {
         if (isLocalPlayer && Vector3.Distance (myTransform.position, lastPos) > threshold)
         {
-            CmdProvidePositionToServer(myTransform.position);
+            CmdProvidePositionToServer (myTransform.position);
             lastPos = myTransform.position;
         }
+
+		if (isLocalPlayer && Vector3.Distance (modelTransform.localPosition, lastModelLocalPos) > threshold) 
+		{
+			CmdProvideModelLocalPosToServer (modelTransform.localPosition);
+			lastModelLocalPos = modelTransform.localPosition;
+		}
     }
 
     [Client]
@@ -85,6 +100,12 @@ public class PlayerSyncPosition : NetworkBehaviour {
         syncPos = latestPos;
         syncPosList.Add (syncPos);
     }
+
+	[Client]
+	void SyncModelLocalPositionValues (Vector3 latestPos)
+	{
+		syncModelLocalPos = latestPos;
+	}
 
     void ShowLatency ()
     {
@@ -97,7 +118,8 @@ public class PlayerSyncPosition : NetworkBehaviour {
 
     void OrdinaryLerping ()
     {
-        myTransform.position = Vector3.Lerp(myTransform.position, syncPos, lerpRate * Time.deltaTime);
+        myTransform.position = Vector3.Lerp (myTransform.position, syncPos, lerpRate * Time.deltaTime);
+		modelTransform.localPosition = Vector3.Lerp (modelTransform.localPosition, syncModelLocalPos, lerpRate * Time.deltaTime);
     }
 
     void HistoricalLerping ()
@@ -119,8 +141,6 @@ public class PlayerSyncPosition : NetworkBehaviour {
             {
                 lerpRate = normalLerpRate;
             }
-
-            Debug.Log ("syncPosList.Count" + syncPosList.Count);
         }
     }
 }
