@@ -85,7 +85,7 @@ public class CameraFollow : NetworkBehaviour {
 
 	public void StartPrepare2Run ()
 	{
-		Debug.Log ("StartPrepare2Run");
+//		Debug.Log ("StartPrepare2Run");
 
 		StartCoroutine ("Prepare2Run");
 	}

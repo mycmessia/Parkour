@@ -27,7 +27,8 @@ public class PlayerSyncPosition : NetworkBehaviour {
     private int latency;
     private Text latencyText;
 
-    private List<Vector3> syncPosList = new List<Vector3>();
+    private List<Vector3> syncPosList = new List<Vector3> ();
+	private List<Vector3> syncModelLocalPoslist = new List<Vector3> ();
     [SerializeField] bool useHistoricalLerping = false;
     private float closeEnough = 0.2f;
 
@@ -105,6 +106,7 @@ public class PlayerSyncPosition : NetworkBehaviour {
 	void SyncModelLocalPositionValues (Vector3 latestPos)
 	{
 		syncModelLocalPos = latestPos;
+		syncModelLocalPoslist.Add (syncModelLocalPos);
 	}
 
     void ShowLatency ()
@@ -126,9 +128,9 @@ public class PlayerSyncPosition : NetworkBehaviour {
     {
         if (syncPosList.Count > 0)
         {
-            myTransform.position = Vector3.Lerp(myTransform.position, syncPosList[0], lerpRate * Time.deltaTime);
+            myTransform.position = Vector3.Lerp (myTransform.position, syncPosList[0], lerpRate * Time.deltaTime);
         
-            if (Vector3.Distance(myTransform.position, syncPosList[0]) < closeEnough)
+            if (Vector3.Distance (myTransform.position, syncPosList[0]) < closeEnough)
             {
                 syncPosList.RemoveAt (0);
             }
@@ -142,5 +144,28 @@ public class PlayerSyncPosition : NetworkBehaviour {
                 lerpRate = normalLerpRate;
             }
         }
+
+		if (syncModelLocalPoslist.Count > 0) 
+		{
+			modelTransform.localPosition = Vector3.Lerp (
+				modelTransform.localPosition, 
+				syncModelLocalPoslist[0],
+				lerpRate * Time.deltaTime
+			);
+
+			if (Vector3.Distance (modelTransform.localPosition, syncModelLocalPoslist[0]) < closeEnough) 
+			{
+				syncModelLocalPoslist.RemoveAt (0);			
+			}
+
+			if (syncModelLocalPoslist.Count > 10) 
+			{
+				lerpRate = fastLerpRate;
+			} 
+			else 
+			{
+				lerpRate = normalLerpRate;
+			}
+		}	
     }
 }
