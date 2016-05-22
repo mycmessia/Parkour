@@ -26,8 +26,13 @@ public class Config {
 	public static int TRACK_COUNT = 4;
 	public static int TRACK_LENGTH = 32;
 
-	public static float MOVE_SPEED = 2f;
-	public static int TURN_LR_FRAMES = 12;
-	public static float JUMP_SPEED = 6f;
+	public class Player
+	{
+		public static float RUN_SPEED = 2f;
+		public static float JUMP_SPEED = 6f;
+
+		public static int TURN_LR_FRAMES = 12;
+	}
+
 	public static float GRAVITY = 16f;
 }

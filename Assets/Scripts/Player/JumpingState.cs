@@ -28,7 +28,7 @@ public class JumpingState : PlayerState {
             anim.SetBool("isJumping2", true);
         }
 
-        player.moveYspeed = Config.JUMP_SPEED;
+		player.jumpSpeed = Config.Player.JUMP_SPEED;
 	}
 
 	void OnDisable ()
@@ -40,7 +40,7 @@ public class JumpingState : PlayerState {
 		else 
 		{
 			anim.SetBool ("isJumping2", false);
-		}	
+		}
 	}
 
 	void HandleInput ()
@@ -70,8 +70,9 @@ public class JumpingState : PlayerState {
 
         if (model.localPosition.y <= 0f) 
 		{
-            model.localPosition = Vector3.zero;
-            player.moveYspeed = 0f;
+			model.localPosition = Vector3.zero;
+			player.jumpSpeed = 0f;
+
 			player.ChangeState (States.Running);
 		}
 	}

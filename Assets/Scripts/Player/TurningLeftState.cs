@@ -30,7 +30,8 @@ public class TurningLeftState : PlayerState {
 		{
 			moveDistance = -Config.TRACK_WIDTh - transform.position.x;
 		}
-		moveFrames = Config.TURN_LR_FRAMES;
+
+		moveFrames = Config.Player.TURN_LR_FRAMES;
 		movePerFrame = moveDistance / moveFrames;
 
 		anim.SetBool ("isTurningLeft", true);
@@ -75,10 +76,5 @@ public class TurningLeftState : PlayerState {
 
 			player.ChangeState (States.Running);
 		}
-	}
-
-	void LateUpdate ()
-	{
-
 	}
 }

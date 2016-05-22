@@ -30,7 +30,8 @@ public class TurningRightState : PlayerState {
 		{
 			moveDistance = -transform.position.x;
 		}
-		moveFrames = Config.TURN_LR_FRAMES;
+
+		moveFrames = Config.Player.TURN_LR_FRAMES;
 		movePerFrame = moveDistance / moveFrames;
 
 		anim.SetBool ("isTurningRight", true);
@@ -40,17 +41,20 @@ public class TurningRightState : PlayerState {
 	{
 		anim.SetBool ("isTurningRight", false);
 
-        player.moveYspeed = 0f;
+		player.jumpSpeed = 0f;
 	}
 
-	void HandleInput () {
-		if (Input.GetKeyUp (KeyCode.LeftArrow)) {
+	void HandleInput () 
+	{
+		if (Input.GetKeyUp (KeyCode.LeftArrow)) 
+		{
 //			Debug.Log ("turn left");
 			player.ChangeState (States.TurningLeft);
 		}
 	}
 
-	void Update () {
+	void Update () 
+	{
 		HandleInput ();
 	}
 		
@@ -75,10 +79,5 @@ public class TurningRightState : PlayerState {
 
 			player.ChangeState (States.Running);
 		}
-	}
-
-	void LateUpdate ()
-	{
-		
 	}
 }

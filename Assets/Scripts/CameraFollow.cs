@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
-using UnityEngine.Networking;
 
-public class CameraFollow : NetworkBehaviour {
+public class CameraFollow : MonoBehaviour {
 
 	public float zOffset;
 	public float zPreOffset;
@@ -16,8 +15,8 @@ public class CameraFollow : NetworkBehaviour {
 	private Vector3 cameraOffset;
 	private Quaternion cameraQuaternion;
 
-	private Transform target;
-	private Vector3 targetPos;
+	public Transform target;
+	public Vector3 targetPos;
 	public float lerpRate;
 
 	void Awake ()

@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.Networking;
 
 public enum States {
 	Preparing,
@@ -13,7 +12,7 @@ public enum States {
 	Sliding
 };
 
-public class Player : NetworkBehaviour {
+public class Player : MonoBehaviour {
 
 	public States m_currentState;
 
@@ -22,8 +21,8 @@ public class Player : NetworkBehaviour {
     private Transform model;
 
     public Vector3 moveVector = Vector3.zero;
-    public float moveZspeed;
-    public float moveYspeed;
+	public float runSpeed;
+	public float jumpSpeed;
 
 	void Awake ()
 	{
@@ -38,15 +37,15 @@ public class Player : NetworkBehaviour {
 		controller = GetComponent<CharacterController> ();
         model = transform.FindChild ("Model");
 
-        moveZspeed = Config.MOVE_SPEED;
-        moveYspeed = 0;
+		runSpeed = Config.Player.RUN_SPEED;
+		jumpSpeed = 0;
 	}
 
-	public override void OnStartLocalPlayer ()
-	{
-		CameraFollow cameraFollow = Camera.main.GetComponent <CameraFollow> ();
-		cameraFollow.SetTarget (transform);
-	}
+//	public override void OnStartLocalPlayer ()
+//	{
+//		CameraFollow cameraFollow = Camera.main.GetComponent <CameraFollow> ();
+//		cameraFollow.SetTarget (transform);
+//	}
 
 	public States GetCurState ()
 	{
@@ -61,44 +60,45 @@ public class Player : NetworkBehaviour {
 
 		switch (state) 
 		{
-		case States.Preparing:
-			GetComponent<PreparingState> ().enabled = true;
-			break;
-		case States.TurningAround:
-			GetComponent<TurningAroundState> ().enabled = true;
-			break;
-		case States.Running:
-			GetComponent<RunningState> ().enabled = true;
-			break;
-		case States.TurningLeft:
-			GetComponent<TurningLeftState> ().enabled = true;
-			break;
-		case States.TurningRight:
-			GetComponent<TurningRightState> ().enabled = true;
-			break;
-		case States.Jumping:
-			GetComponent<JumpingState> ().enabled = true;
-			break;
-		case States.Sliding:
-			GetComponent<SlidingState> ().enabled = true;
-			break;
+			case States.Preparing:
+				GetComponent<PreparingState> ().enabled = true;
+				break;
+			case States.TurningAround:
+				GetComponent<TurningAroundState> ().enabled = true;
+				break;
+			case States.Running:
+				GetComponent<RunningState> ().enabled = true;
+				break;
+			case States.TurningLeft:
+				GetComponent<TurningLeftState> ().enabled = true;
+				break;
+			case States.TurningRight:
+				GetComponent<TurningRightState> ().enabled = true;
+				break;
+			case States.Jumping:
+				GetComponent<JumpingState> ().enabled = true;
+				break;
+			case States.Sliding:
+				GetComponent<SlidingState> ().enabled = true;
+				break;
 		}
 	}
 
 	void DisableAllStates ()
 	{
-		for (int i = 0; i < statesList.Count; i++) {
+		for (int i = 0; i < statesList.Count; i++) 
+		{
 			statesList [i].enabled = false;		
 		}
 	}
 
 	void Update ()
 	{
-        moveVector.z = moveZspeed * Time.deltaTime;
+		moveVector.z = runSpeed * Time.deltaTime;
 
         if (model.localPosition.y > 0f)
         {
-            moveYspeed -= Config.GRAVITY * Time.deltaTime;
+			jumpSpeed -= Config.GRAVITY * Time.deltaTime;
 			moveVector.y = 0f;
         }
 		else if (!controller.isGrounded)
@@ -111,12 +111,12 @@ public class Player : NetworkBehaviour {
 	{
 		controller.Move (moveVector);
 
-        model.localPosition += new Vector3 (0f, moveYspeed * Time.deltaTime, 0f);
+		model.localPosition += new Vector3 (0f, jumpSpeed * Time.deltaTime, 0f);
 
         if (model.localPosition.y <= 0f)
         {
             model.localPosition = Vector3.zero;
-            moveYspeed = 0F;
+			jumpSpeed = 0F;
         }
 
         if (controller.isGrounded)
