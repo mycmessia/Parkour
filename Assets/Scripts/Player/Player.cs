@@ -21,7 +21,7 @@ public class Player : MonoBehaviour {
     private Transform model;
 
     public Vector3 moveVector = Vector3.zero;
-	public float runSpeed;
+//	public float runSpeed;
 	public float jumpSpeed;
 
 	void Awake ()
@@ -37,7 +37,7 @@ public class Player : MonoBehaviour {
 		controller = GetComponent<CharacterController> ();
         model = transform.FindChild ("Model");
 
-		runSpeed = Config.Player.RUN_SPEED;
+//		runSpeed = Config.Player.RUN_SPEED;
 		jumpSpeed = 0;
 	}
 
@@ -94,7 +94,7 @@ public class Player : MonoBehaviour {
 
 	void Update ()
 	{
-		moveVector.z = runSpeed * Time.deltaTime;
+//		moveVector.z = runSpeed * Time.deltaTime;
 
         if (model.localPosition.y > 0f)
         {

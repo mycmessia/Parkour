@@ -31,7 +31,7 @@ public class CameraFollow : MonoBehaviour {
 
 		targetPos = Vector3.zero;
 
-		lerpRate = 12f;
+		lerpRate = 10f;
 	}
 
 	void OnEnable ()

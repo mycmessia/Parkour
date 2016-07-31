@@ -14,7 +14,7 @@ public class PreparingState : PlayerState {
 
 	void OnEnable ()
 	{
-//		StartCoroutine ("StartRun");
+		StartCoroutine ("StartRun");
 	}
 
 	void Update ()
@@ -35,6 +35,8 @@ public class PreparingState : PlayerState {
 	IEnumerator StartRun ()
 	{
 		yield return new WaitForSeconds (3F);
+
+		cameraFollow.StartPrepare2Run ();
 
 		player.ChangeState (States.TurningAround);
 	}

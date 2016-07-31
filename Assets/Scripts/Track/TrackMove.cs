@@ -1,31 +1,37 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class TrackMove : MonoBehaviour {
 
-	private Transform track;
-	int passedPlayerCount;
+	private float moveSpeed;
+
+	public List<Transform> trackList = new List<Transform> ();
 
 	void Awake ()
 	{
-		passedPlayerCount = 0;
-
-		track = transform.parent.parent;
+		moveSpeed = Config.TRACK_SPEED;
 	}
 
-	void OnTriggerExit (Collider col)
+	void OnEnable ()
 	{
-		if (col.CompareTag ("Player")) 
-		{
-			passedPlayerCount++;
+		
+	}
 
-			if (passedPlayerCount == 2) 
+	void OnDisEnable ()
+	{
+		
+	}
+
+	void FixedUpdate ()
+	{
+		for (int i = 0; i < trackList.Count; i++)
+		{
+			trackList[i].localPosition -= new Vector3 (0f, 0f, moveSpeed * Time.deltaTime);
+
+			if (trackList[i].localPosition.z < -Config.TRACK_LENGTH)
 			{
-				track.position = new Vector3 (
-					track.position.x, track.position.y, 
-					track.position.z + Config.TRACK_COUNT * Config.TRACK_LENGTH
-				);
-				passedPlayerCount = 0;
+				trackList[i].localPosition = new Vector3 (0f, 0f, (trackList.Count - 1) * Config.TRACK_LENGTH);
 			}
 		}
 	}

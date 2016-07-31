@@ -65,8 +65,9 @@ public class TurningLeftState : PlayerState {
 			transform.position.z
 		);
 		moveDistance -= movePerFrame;
+		moveFrames--;
 
-		if (Mathf.Abs (moveDistance) < 0.01f)
+		if (moveFrames <= 0)
 		{
 			transform.position = new Vector3 (
 				transform.position.x + moveDistance, 

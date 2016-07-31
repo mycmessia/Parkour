@@ -6,21 +6,25 @@ public class RunningState : PlayerState {
 	private Player player;
     private Transform model;
 	private Animator anim;
+	private TrackMove trackMove;
 
 	void Awake ()
 	{
 		player = GetComponent<Player> ();
         model = transform.FindChild ("Model");
 		anim = player.GetAnimator ();
+		trackMove = GameObject.Find ("TrackController").GetComponent<TrackMove> ();
 	}
 
 	void OnEnable ()
 	{
+		trackMove.enabled = true;
 		anim.SetBool ("isRunning", true);
 	}
 
 	void OnDisable ()
 	{
+//		trackMove.enabled = false;
 		anim.SetBool ("isRunning", false);
 	}
 
