@@ -37,15 +37,8 @@ public class Player : MonoBehaviour {
 		controller = GetComponent<CharacterController> ();
         model = transform.FindChild ("Model");
 
-//		runSpeed = Config.Player.RUN_SPEED;
 		jumpSpeed = 0;
 	}
-
-//	public override void OnStartLocalPlayer ()
-//	{
-//		CameraFollow cameraFollow = Camera.main.GetComponent <CameraFollow> ();
-//		cameraFollow.SetTarget (transform);
-//	}
 
 	public States GetCurState ()
 	{
@@ -94,8 +87,6 @@ public class Player : MonoBehaviour {
 
 	void Update ()
 	{
-//		moveVector.z = runSpeed * Time.deltaTime;
-
         if (model.localPosition.y > 0f)
         {
 			jumpSpeed -= Config.GRAVITY * Time.deltaTime;
