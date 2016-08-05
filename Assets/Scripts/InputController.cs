@@ -30,6 +30,11 @@ public class InputController : MonoBehaviour {
 		inputText = GameObject.Find ("InputText").GetComponent<Text> ();
 	}
 
+	public void SetInput (UserInput ui)
+	{
+		inputsQueue.Enqueue (ui);
+	}
+
 	public UserInput GetInput ()
 	{
 		if (inputsQueue.Count > 0)
