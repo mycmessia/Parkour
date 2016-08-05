@@ -18,8 +18,8 @@ public class SlidingState : PlayerState {
 
 		anim.SetBool ("isSliding", true);
 
-		if (player.jumpSpeed != 0f)
-			player.jumpSpeed = -Config.Player.JUMP_SPEED * 2f;
+		if (player.jumpForce != 0f)
+			player.jumpForce = -Config.Player.JUMP_SPEED * 2f;
 	}
 
 	void OnDisable ()
@@ -28,7 +28,7 @@ public class SlidingState : PlayerState {
 
 		anim.SetBool ("isSliding", false);
 
-		player.jumpSpeed = 0f;
+		player.jumpForce = 0f;
 	}
 
 	void HandleInput ()

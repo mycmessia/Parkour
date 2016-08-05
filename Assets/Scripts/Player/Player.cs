@@ -20,9 +20,8 @@ public class Player : MonoBehaviour {
 	private CharacterController controller;
     private Transform model;
 
-    public Vector3 moveVector = Vector3.zero;
-//	public float runSpeed;
-	public float jumpSpeed;
+    public float gravity = 0f;
+	public float jumpForce = 0f;
 
 	void Awake ()
 	{
@@ -37,15 +36,9 @@ public class Player : MonoBehaviour {
 		controller = GetComponent<CharacterController> ();
         model = transform.FindChild ("Model");
 
-//		runSpeed = Config.Player.RUN_SPEED;
-		jumpSpeed = 0;
+		jumpForce = 0f;
+		gravity = 0f;
 	}
-
-//	public override void OnStartLocalPlayer ()
-//	{
-//		CameraFollow cameraFollow = Camera.main.GetComponent <CameraFollow> ();
-//		cameraFollow.SetTarget (transform);
-//	}
 
 	public States GetCurState ()
 	{
@@ -94,34 +87,32 @@ public class Player : MonoBehaviour {
 
 	void Update ()
 	{
-//		moveVector.z = runSpeed * Time.deltaTime;
-
         if (model.localPosition.y > 0f)
         {
-			jumpSpeed -= Config.GRAVITY * Time.deltaTime;
-			moveVector.y = 0f;
+			jumpForce -= Config.GRAVITY * Time.deltaTime;
+			gravity = 0f;
         }
 		else if (!controller.isGrounded)
         {
-            moveVector.y -= 1.5f * Time.deltaTime;
+            gravity -= 1.5f * Time.deltaTime;
         }
 	}
 
 	public void Move ()
 	{
-		controller.Move (moveVector);
+		controller.Move (new Vector3 (0f, gravity, 0));
 
-		model.localPosition += new Vector3 (0f, jumpSpeed * Time.deltaTime, 0f);
+		model.localPosition += new Vector3 (0f, jumpForce * Time.deltaTime, 0f);
 
         if (model.localPosition.y <= 0f)
         {
             model.localPosition = Vector3.zero;
-			jumpSpeed = 0F;
+			jumpForce = 0F;
         }
 
         if (controller.isGrounded)
         {
-            moveVector.y = 0f;
+            gravity = 0f;
         }
 	}
 

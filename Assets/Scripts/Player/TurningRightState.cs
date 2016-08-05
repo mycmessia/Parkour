@@ -40,8 +40,6 @@ public class TurningRightState : PlayerState {
 	void OnDisable ()
 	{
 		anim.SetBool ("isTurningRight", false);
-
-		player.jumpSpeed = 0f;
 	}
 
 	void HandleInput () 
