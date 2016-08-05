@@ -58,9 +58,9 @@ public class CameraFollow : MonoBehaviour {
 
 	IEnumerator Prepare2Run ()
 	{
-		yield return new WaitForSeconds (0.2f);
+		yield return new WaitForSeconds (0.3f);
 
-		int p2rFrames = 60;
+		int p2rFrames = 120;
 		int framesCounter = p2rFrames;
 		float cameraOffsetY = Config.Camera.Y_PREPARE_PLAYER_OFFSET;
 		float cameraOffsetZ = Config.Camera.Z_PREPARE_PLAYER_OFFSET;

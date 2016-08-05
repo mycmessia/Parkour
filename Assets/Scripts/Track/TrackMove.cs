@@ -23,6 +23,14 @@ public class TrackMove : MonoBehaviour {
 		
 	}
 
+	void Reset (Transform track)
+	{
+		if (track.FindChild ("Model").FindChild ("Stage") != null)
+		{
+			track.FindChild ("Model").FindChild ("Stage").gameObject.SetActive (false);
+		}
+	}
+
 	void FixedUpdate ()
 	{
 		for (int i = 0; i < trackList.Count; i++)
@@ -32,6 +40,8 @@ public class TrackMove : MonoBehaviour {
 			if (trackList[i].localPosition.z < -Config.TRACK_LENGTH)
 			{
 				trackList[i].localPosition = new Vector3 (0f, 0f, (trackList.Count - 1) * Config.TRACK_LENGTH);
+
+				Reset (trackList[i]);
 			}
 		}
 	}
