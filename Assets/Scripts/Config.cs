@@ -12,7 +12,7 @@ public class Config {
 		public const float Z_PLAYER_OFFSET = -1.5f;						// old 1.2
 
 		public const float Y_PREPARE_PLAYER_OFFSET = 0.6f;
-		public const float Y_PLAYER_OFFSET = 1f;						// old 1.4
+		public const float Y_PLAYER_OFFSET = 1.2f;						// old 1.4
 
 		public const float X_PREPARE_ROTATE = 10f;
 		public const float X_ROTATE = 12f;								// old 25

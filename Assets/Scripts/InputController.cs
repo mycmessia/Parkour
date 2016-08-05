@@ -60,10 +60,8 @@ public class InputController : MonoBehaviour {
 			startTouchPos = Input.GetTouch (0).position;
 		}
 
-		if (Input.GetTouch (0).phase == TouchPhase.Ended && isTouchStart == true)
+		if (Input.GetTouch (0).phase == TouchPhase.Moved && isTouchStart == true)
 		{
-			isTouchStart =false;
-
 			Vector2 endTouchPos = Input.GetTouch (0).position;
 			float xMoveDis = Mathf.Abs (endTouchPos.x - startTouchPos.x);
 			float yMoveDis = Mathf.Abs (endTouchPos.y - startTouchPos.y);
@@ -71,8 +69,10 @@ public class InputController : MonoBehaviour {
 			if (xMoveDis > minTouchMoveDis || yMoveDis > minTouchMoveDis)
 			{
 				// move left or right
-				if (xMoveDis > yMoveDis)
+				if (xMoveDis > yMoveDis * 1.1f)
 				{
+					isTouchStart =false;
+
 					if (endTouchPos.x - startTouchPos.x > 0)
 					{
 						// move right
