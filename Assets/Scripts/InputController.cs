@@ -20,6 +20,8 @@ public class InputController : MonoBehaviour {
 
 	Text inputText;
 
+	Player player;
+
 	void Awake ()
 	{
 		instance = this;
@@ -28,6 +30,8 @@ public class InputController : MonoBehaviour {
 	void Start ()
 	{
 		inputText = GameObject.Find ("InputText").GetComponent<Text> ();
+		player = GameObject.Find ("Player").GetComponent<Player> ();
+
 	}
 
 	public void SetInput (UserInput ui)
@@ -122,7 +126,13 @@ public class InputController : MonoBehaviour {
 	}
 
 	// Update is called once per frame
-	void Update () {
+	void Update () 
+	{
+		if (player.GetCurState () == States.Preparing || player.GetCurState () == States.TurningAround)
+		{
+			return;
+		}
+
 		GetTouchInput ();
 		GetKeyInput ();
 	}
