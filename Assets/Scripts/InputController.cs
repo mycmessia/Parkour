@@ -68,11 +68,11 @@ public class InputController : MonoBehaviour {
 
 			if (xMoveDis > minTouchMoveDis || yMoveDis > minTouchMoveDis)
 			{
+				isTouchStart =false;
+
 				// move left or right
 				if (xMoveDis > yMoveDis * 1.1f)
 				{
-					isTouchStart =false;
-
 					if (endTouchPos.x - startTouchPos.x > 0)
 					{
 						// move right
