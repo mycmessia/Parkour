@@ -98,7 +98,22 @@ public class InputController : MonoBehaviour {
 
 	void GetKeyInput ()
 	{
-
+		if (Input.GetKeyUp (KeyCode.UpArrow))
+		{
+			inputsQueue.Enqueue (UserInput.Up);
+		}
+		else if (Input.GetKeyUp (KeyCode.LeftArrow))
+		{
+			inputsQueue.Enqueue (UserInput.Left);
+		}
+		else if (Input.GetKeyUp (KeyCode.RightArrow))
+		{
+			inputsQueue.Enqueue (UserInput.Right);
+		}
+		else if (Input.GetKeyUp (KeyCode.DownArrow))
+		{
+			inputsQueue.Enqueue (UserInput.Down);
+		}
 	}
 
 	// Update is called once per frame
