@@ -16,7 +16,9 @@ public class InputController : MonoBehaviour {
 
 	bool isTouchStart = false;
 	Vector2 startTouchPos = Vector2.zero;
-	float minTouchMoveDis = 16F;
+	float minSwipeDist = 24f;
+	float startTouchTime;
+	float maxSwipeTime = 0.5f;
 
 	Text inputText;
 
@@ -31,7 +33,6 @@ public class InputController : MonoBehaviour {
 	{
 		inputText = GameObject.Find ("InputText").GetComponent<Text> ();
 		player = GameObject.Find ("Player").GetComponent<Player> ();
-
 	}
 
 	public void SetInput (UserInput ui)
@@ -54,54 +55,77 @@ public class InputController : MonoBehaviour {
 		if (Input.touchCount <= 0)
 			return;
 
-		if (Input.GetTouch (0).phase == TouchPhase.Began && isTouchStart == false)
-		{
-			isTouchStart = true;
-			startTouchPos = Input.GetTouch (0).position;
-		}
+		TouchPhase phase = Input.GetTouch (0).phase;
 
-		if (Input.GetTouch (0).phase == TouchPhase.Moved && isTouchStart == true)
+		switch (phase)
 		{
-			Vector2 endTouchPos = Input.GetTouch (0).position;
-			float xMoveDis = Mathf.Abs (endTouchPos.x - startTouchPos.x);
-			float yMoveDis = Mathf.Abs (endTouchPos.y - startTouchPos.y);
-
-			if (xMoveDis > minTouchMoveDis || yMoveDis > minTouchMoveDis)
+		case TouchPhase.Began:
+			if (!isTouchStart)
 			{
-				isTouchStart =false;
+				isTouchStart = true;
+				startTouchPos = Input.GetTouch (0).position;
+				startTouchTime = Time.time;
+			}
+			break;
 
-				// move left or right
-				if (xMoveDis > yMoveDis * 1.1f)
+//		case TouchPhase.Stationary:
+//			isTouchStart = false;
+//			break;
+
+		case TouchPhase.Moved:
+			if (isTouchStart)
+			{
+				Vector2 endTouchPos = Input.GetTouch (0).position;
+				float swipeDist = (endTouchPos - startTouchPos).magnitude;
+				float swipeTime = Time.time - startTouchTime;
+
+				inputText.text = swipeDist.ToString ("f1") + "\ntime " + swipeTime.ToString ("f1");
+
+				if (swipeTime > maxSwipeTime)
 				{
-					if (endTouchPos.x - startTouchPos.x > 0)
-					{
-						// move right
-						inputsQueue.Enqueue (UserInput.Right);
-						inputText.text = "Right";
-					}
-					else
-					{
-						// move left
-						inputsQueue.Enqueue (UserInput.Left);
-						inputText.text = "Left";
-					}
+					isTouchStart =false;
 				}
-				else	// move up or down
+				else if (swipeDist > minSwipeDist)
 				{
-					if (endTouchPos.y - startTouchPos.y > 0)
+					isTouchStart =false;
+
+					float xMoveDis = Mathf.Abs (endTouchPos.x - startTouchPos.x);
+					float yMoveDis = Mathf.Abs (endTouchPos.y - startTouchPos.y);
+
+					// move left or right
+					if (xMoveDis > yMoveDis)
 					{
-						// move up
-						inputsQueue.Enqueue (UserInput.Up);
-						inputText.text = "Up";
+						if (endTouchPos.x - startTouchPos.x > 0)
+						{
+							// move right
+							inputsQueue.Enqueue (UserInput.Right);
+//							inputText.text = "Right";
+						}
+						else
+						{
+							// move left
+							inputsQueue.Enqueue (UserInput.Left);
+//							inputText.text = "Left";
+						}
 					}
-					else
+					else	// move up or down
 					{
-						// move down
-						inputsQueue.Enqueue (UserInput.Down);
-						inputText.text = "Down";
+						if (endTouchPos.y - startTouchPos.y > 0)
+						{
+							// move up
+							inputsQueue.Enqueue (UserInput.Up);
+//							inputText.text = "Up";
+						}
+						else
+						{
+							// move down
+							inputsQueue.Enqueue (UserInput.Down);
+//							inputText.text = "Down";
+						}
 					}
 				}
 			}
+			break;
 		}
 	}
 
