@@ -16,7 +16,7 @@ public class InputController : MonoBehaviour {
 
 	bool isTouchStart = false;
 	Vector2 startTouchPos = Vector2.zero;
-	float minSwipeDist = 30f;
+	float minSwipeDist = 36f;
 
 	Text inputText;
 
@@ -69,19 +69,17 @@ public class InputController : MonoBehaviour {
 			if (isTouchStart)
 			{
 				Vector2 endTouchPos = Input.GetTouch (0).position;
-				float swipeDist = (endTouchPos - startTouchPos).magnitude;
+				float xSwipeDis = Mathf.Abs (endTouchPos.x - startTouchPos.x);
+				float ySwipeDis = Mathf.Abs (endTouchPos.y - startTouchPos.y);
 
-				inputText.text = swipeDist.ToString ("f1");
+				inputText.text = "X: " + xSwipeDis.ToString ("f1") + " Y: " + ySwipeDis.ToString ("f1");
 
-				if (swipeDist > minSwipeDist)
+				if (xSwipeDis > minSwipeDist || ySwipeDis > minSwipeDist)
 				{
 					isTouchStart =false;
 
-					float xMoveDis = Mathf.Abs (endTouchPos.x - startTouchPos.x);
-					float yMoveDis = Mathf.Abs (endTouchPos.y - startTouchPos.y);
-
 					// move left or right
-					if (xMoveDis > yMoveDis * 1.1f)
+					if (xSwipeDis > ySwipeDis)
 					{
 						if (endTouchPos.x - startTouchPos.x > 0)
 						{
