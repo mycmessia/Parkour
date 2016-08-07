@@ -62,7 +62,6 @@ public class InputController : MonoBehaviour {
 			{
 				isTouchStart = true;
 				startTouchPos = Input.GetTouch (0).position;
-				startTouchTime = Time.time;
 			}
 			break;
 
