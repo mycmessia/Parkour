@@ -17,8 +17,6 @@ public class InputController : MonoBehaviour {
 	bool isTouchStart = false;
 	Vector2 startTouchPos = Vector2.zero;
 	float minSwipeDist = 24f;
-	float startTouchTime;
-	float maxSwipeTime = 0.5f;
 
 	Text inputText;
 
@@ -68,24 +66,15 @@ public class InputController : MonoBehaviour {
 			}
 			break;
 
-//		case TouchPhase.Stationary:
-//			isTouchStart = false;
-//			break;
-
 		case TouchPhase.Moved:
 			if (isTouchStart)
 			{
 				Vector2 endTouchPos = Input.GetTouch (0).position;
 				float swipeDist = (endTouchPos - startTouchPos).magnitude;
-				float swipeTime = Time.time - startTouchTime;
 
-				inputText.text = swipeDist.ToString ("f1") + "\ntime " + swipeTime.ToString ("f1");
+				inputText.text = swipeDist.ToString ("f1");
 
-				if (swipeTime > maxSwipeTime)
-				{
-					isTouchStart =false;
-				}
-				else if (swipeDist > minSwipeDist)
+				if (swipeDist > minSwipeDist)
 				{
 					isTouchStart =false;
 
