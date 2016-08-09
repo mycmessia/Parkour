@@ -9,7 +9,10 @@ public enum States {
 	TurningLeft,
 	TurningRight,
 	Jumping,
-	Sliding
+	Sliding,
+	Kicking,
+	Walking,
+	Away
 };
 
 public class Player : MonoBehaviour {
@@ -118,6 +121,6 @@ public class Player : MonoBehaviour {
 
 	public Animator GetAnimator ()
 	{
-		return GetComponent<Animator> ();
+		return GetComponent <Animator> ();
 	}
 }
