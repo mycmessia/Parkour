@@ -10,7 +10,7 @@ public class PasserWalkingState : PasserState {
 	float walkingDistance;
 	float distanceCounter;
 
-	const float WALKING_SPEED = 1f;
+	const float WALKING_SPEED = 0.5f;
 
 	void Awake ()
 	{

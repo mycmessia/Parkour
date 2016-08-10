@@ -32,7 +32,7 @@ public class Passer : MonoBehaviour {
 	void FixedUpdate ()
 	{
 		if (!isEnableType &&
-			transform.position.z - player.transform.position.z < Config.TRACK_LENGTH)
+			transform.position.z - player.transform.position.z < Config.TRACK_LENGTH / 2f)
 		{
 			GetComponent<Animator> ().enabled = true;
 

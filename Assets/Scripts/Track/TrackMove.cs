@@ -11,14 +11,16 @@ public class TrackMove : MonoBehaviour {
 	void Awake ()
 	{
 		moveSpeed = Config.TRACK_SPEED;
-	}
 
-	void OnEnable ()
-	{
 		for (int i = 1; i < trackList.Count; i++)
 		{
 			ResetATrack (trackList[i]);
 		}
+	}
+
+	void OnEnable ()
+	{
+
 	}
 
 	void OnDisEnable ()
@@ -40,8 +42,13 @@ public class TrackMove : MonoBehaviour {
 	{
 		for (int i = 0; i < 4; i++)
 		{
+			int ran = Random.Range (0, 2);
+			string passerName = "Passer";
+			if (ran == 0)
+				passerName = "Passer02";
+
 			GameObject passer = Instantiate (
-				Resources.Load ("Prefabs/Passer", typeof (GameObject))
+				Resources.Load ("Prefabs/" + passerName, typeof (GameObject))
 			) as GameObject;
 
 			passer.transform.parent = obs;
