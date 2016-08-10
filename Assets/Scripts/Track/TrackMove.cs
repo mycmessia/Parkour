@@ -15,7 +15,10 @@ public class TrackMove : MonoBehaviour {
 
 	void OnEnable ()
 	{
-		
+		for (int i = 1; i < trackList.Count; i++)
+		{
+			ResetATrack (trackList[i]);
+		}
 	}
 
 	void OnDisEnable ()
@@ -23,12 +26,44 @@ public class TrackMove : MonoBehaviour {
 		
 	}
 
-	void Reset (Transform track)
+	void CLearObs (Transform obs)
+	{
+		int obsCount = obs.childCount;
+
+		for (int i = obsCount - 1; i >= 0; i--)
+		{
+			Destroy (obs.GetChild (i).gameObject);
+		}
+	}
+
+	void CreateObs (Transform obs)
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			GameObject passer = Instantiate (Resources.Load ("Prefabs/Passer", typeof (GameObject))) as GameObject;
+
+			passer.transform.parent = obs;
+
+			int randomLine = Random.Range (0, 3) - 1;
+			int zPos = i * 8 - 16;
+
+			passer.transform.localPosition = new Vector3 (randomLine * Config.TRACK_WIDTh, 0f, zPos);
+		}
+	}
+
+	void ResetATrack (Transform track)
 	{
 		if (track.FindChild ("Model").FindChild ("Stage") != null)
 		{
 			track.FindChild ("Model").FindChild ("Stage").gameObject.SetActive (false);
 		}
+
+		Transform obs = track.FindChild ("Obstacle");
+
+		if (obs.childCount > 0)
+			CLearObs (obs);
+
+		CreateObs (obs);
 	}
 
 	void FixedUpdate ()
@@ -41,7 +76,7 @@ public class TrackMove : MonoBehaviour {
 			{
 				trackList[i].localPosition = new Vector3 (0f, 0f, (trackList.Count - 1) * Config.TRACK_LENGTH);
 
-				Reset (trackList[i]);
+				ResetATrack (trackList[i]);
 			}
 		}
 	}
