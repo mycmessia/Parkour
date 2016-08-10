@@ -40,7 +40,9 @@ public class TrackMove : MonoBehaviour {
 	{
 		for (int i = 0; i < 4; i++)
 		{
-			GameObject passer = Instantiate (Resources.Load ("Prefabs/Passer", typeof (GameObject))) as GameObject;
+			GameObject passer = Instantiate (
+				Resources.Load ("Prefabs/Passer", typeof (GameObject))
+			) as GameObject;
 
 			passer.transform.parent = obs;
 
@@ -48,6 +50,8 @@ public class TrackMove : MonoBehaviour {
 			int zPos = i * 8 - 16;
 
 			passer.transform.localPosition = new Vector3 (randomLine * Config.TRACK_WIDTh, 0f, zPos);
+
+			passer.GetComponent<Passer> ().RandomPasserType ();
 		}
 	}
 
