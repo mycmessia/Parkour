@@ -12,7 +12,8 @@ public enum States {
 	Sliding,
 	Kicking,
 	Walking,
-	Away
+	Away,
+	Die
 };
 
 public class Player : MonoBehaviour {
@@ -35,6 +36,7 @@ public class Player : MonoBehaviour {
 		statesList.Add (GetComponent<TurningRightState> ());
 		statesList.Add (GetComponent<JumpingState> ());
 		statesList.Add (GetComponent<SlidingState> ());
+		statesList.Add (GetComponent<DieState> ());
 
 		controller = GetComponent<CharacterController> ();
         model = transform.FindChild ("Model");
@@ -56,27 +58,30 @@ public class Player : MonoBehaviour {
 
 		switch (state) 
 		{
-			case States.Preparing:
-				GetComponent<PreparingState> ().enabled = true;
-				break;
-			case States.TurningAround:
-				GetComponent<TurningAroundState> ().enabled = true;
-				break;
-			case States.Running:
-				GetComponent<RunningState> ().enabled = true;
-				break;
-			case States.TurningLeft:
-				GetComponent<TurningLeftState> ().enabled = true;
-				break;
-			case States.TurningRight:
-				GetComponent<TurningRightState> ().enabled = true;
-				break;
-			case States.Jumping:
-				GetComponent<JumpingState> ().enabled = true;
-				break;
-			case States.Sliding:
-				GetComponent<SlidingState> ().enabled = true;
-				break;
+		case States.Preparing:
+			GetComponent<PreparingState> ().enabled = true;
+			break;
+		case States.TurningAround:
+			GetComponent<TurningAroundState> ().enabled = true;
+			break;
+		case States.Running:
+			GetComponent<RunningState> ().enabled = true;
+			break;
+		case States.TurningLeft:
+			GetComponent<TurningLeftState> ().enabled = true;
+			break;
+		case States.TurningRight:
+			GetComponent<TurningRightState> ().enabled = true;
+			break;
+		case States.Jumping:
+			GetComponent<JumpingState> ().enabled = true;
+			break;
+		case States.Sliding:
+			GetComponent<SlidingState> ().enabled = true;
+			break;
+		case States.Die:
+			GetComponent<DieState> ().enabled = true;
+			break;
 		}
 	}
 
