@@ -128,4 +128,12 @@ public class Player : MonoBehaviour {
 	{
 		return GetComponent <Animator> ();
 	}
+
+	public bool isJumping ()
+	{
+		if (model.localPosition.y > 0f)
+			return true;
+
+		return false;
+	}
 }

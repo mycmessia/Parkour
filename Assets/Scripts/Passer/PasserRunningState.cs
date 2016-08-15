@@ -6,7 +6,7 @@ public class PasserRunningState : PasserState {
 	Passer passer;
 	Animator ani;
 
-	private TrackMove trackMove;
+//	private TrackMove trackMove;
 
 	float runningSpeed;
 
@@ -15,7 +15,7 @@ public class PasserRunningState : PasserState {
 		passer = GetComponent<Passer> ();
 		ani = passer.GetAnimator ();
 
-		trackMove = GameObject.Find ("TrackController").GetComponent<TrackMove> ();
+//		trackMove = GameObject.Find ("TrackController").GetComponent<TrackMove> ();
 
 		runningSpeed = -2f;
 	}
