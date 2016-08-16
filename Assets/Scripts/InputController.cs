@@ -38,6 +38,11 @@ public class InputController : MonoBehaviour {
 		inputsQueue.Enqueue (ui);
 	}
 
+	public void ClearInputs ()
+	{
+		inputsQueue.Clear ();
+	}
+
 	public UserInput GetInput ()
 	{
 		if (inputsQueue.Count > 0)

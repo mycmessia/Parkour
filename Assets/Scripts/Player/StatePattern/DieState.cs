@@ -32,6 +32,8 @@ public class DieState : PlayerState {
 
 	IEnumerator RestartGame ()
 	{
+		InputController.instance.ClearInputs ();
+
 		yield return new WaitForSeconds (2f);
 
 		player.ChangeState (States.Running);
