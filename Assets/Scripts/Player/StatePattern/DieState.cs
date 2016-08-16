@@ -31,10 +31,12 @@ public class DieState : PlayerState {
 	}
 
 	IEnumerator RestartGame ()
-	{
+	{		
 		InputController.instance.ClearInputs ();
 
 		yield return new WaitForSeconds (2f);
+
+		player.transform.position = Vector3.zero;
 
 		player.ChangeState (States.Running);
 	}
