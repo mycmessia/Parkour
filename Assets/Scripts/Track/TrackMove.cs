@@ -106,21 +106,38 @@ public class TrackMove : MonoBehaviour {
 		CreateObs (obs);
 	}
 
-	void FixedUpdate ()
+	void MovePastTrack ()
 	{
 		for (int i = 0; i < trackList.Count; i++)
 		{
-			trackList[i].localPosition -= new Vector3 (0f, 0f, moveSpeed * Time.deltaTime);
-
 			if (trackList[i].localPosition.z < -Config.TRACK_LENGTH)
 			{
-				float newZPos = trackList[i].localPosition.z + TRACK_TOTAL_LENGTH;
+				float farestTrack = 0f;
+				for (int j = 0; j < trackList.Count; j++)
+				{
+					if (trackList[j].localPosition.z > farestTrack)
+					{
+						farestTrack = trackList[j].localPosition.z;
+					}
+				}
+
+				float newZPos = farestTrack + Config.TRACK_LENGTH;
 
 				trackList[i].localPosition = new Vector3 (0f, 0f, newZPos);
 
 				ResetATrack (trackList[i]);
 			}
 		}
+	}
+
+	void FixedUpdate ()
+	{
+		for (int i = 0; i < trackList.Count; i++)
+		{
+			trackList[i].localPosition -= new Vector3 (0f, 0f, moveSpeed * Time.deltaTime);
+		}
+
+		MovePastTrack ();
 
 		moveDist += moveSpeed * Time.deltaTime;
 
