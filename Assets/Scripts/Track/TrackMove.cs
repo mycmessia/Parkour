@@ -1,31 +1,58 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
 public class TrackMove : MonoBehaviour {
 
+	private float moveDist;
 	private float moveSpeed;
+
+	private Text gameInfo;
 
 	public List<Transform> trackList = new List<Transform> ();
 
+	private float TRACK_TOTAL_LENGTH;
+
 	void Awake ()
 	{
+		moveDist = 0f;
+
 		moveSpeed = Config.TRACK_SPEED;
 
 		for (int i = 1; i < trackList.Count; i++)
 		{
 			ResetATrack (trackList[i]);
 		}
+
+		gameInfo = GameObject.Find ("GameInfo").GetComponent <Text> ();
+
+		TRACK_TOTAL_LENGTH = (trackList.Count - 1) * Config.TRACK_LENGTH;
 	}
 
 	void OnEnable ()
 	{
-
+		ClearCureentTrackObs ();
 	}
 
-	void OnDisEnable ()
+	// Game reset
+	void OnDisable ()
 	{
-		
+		moveDist = 0f;
+
+		moveSpeed = Config.TRACK_SPEED;
+	}
+
+	void ClearCureentTrackObs ()
+	{
+		for (int i = 1; i < trackList.Count; i++)
+		{
+			if (trackList[i].localPosition.z >= -Config.TRACK_LENGTH / 2F &&
+				trackList[i].localPosition.z <= Config.TRACK_LENGTH / 2F)
+			{
+				CLearObs (trackList[i].FindChild ("Obstacle"));
+			}
+		}
 	}
 
 	void CLearObs (Transform obs)
@@ -40,7 +67,9 @@ public class TrackMove : MonoBehaviour {
 
 	void CreateObs (Transform obs)
 	{
-		for (int i = 0; i < 4; i++)
+		int passerCountPerTrack = Random.Range (4, 7);
+
+		for (int i = 0; i < passerCountPerTrack; i++)
 		{
 			int ran = Random.Range (0, 2);
 			string passerName = "Passer";
@@ -54,7 +83,7 @@ public class TrackMove : MonoBehaviour {
 			passer.transform.parent = obs;
 
 			int randomLine = Random.Range (0, 3) - 1;
-			int zPos = i * 8 - 16;
+			int zPos = i * Config.TRACK_LENGTH / passerCountPerTrack - 16;
 
 			passer.transform.localPosition = new Vector3 (randomLine * Config.TRACK_WIDTh, 0f, zPos);
 
@@ -85,10 +114,18 @@ public class TrackMove : MonoBehaviour {
 
 			if (trackList[i].localPosition.z < -Config.TRACK_LENGTH)
 			{
-				trackList[i].localPosition = new Vector3 (0f, 0f, (trackList.Count - 1) * Config.TRACK_LENGTH);
+				float newZPos = trackList[i].localPosition.z + TRACK_TOTAL_LENGTH;
+
+				trackList[i].localPosition = new Vector3 (0f, 0f, newZPos);
 
 				ResetATrack (trackList[i]);
 			}
 		}
+
+		moveDist += moveSpeed * Time.deltaTime;
+
+		moveSpeed = Config.TRACK_SPEED +  (int) (moveDist / 50F);
+
+		gameInfo.text = "Meters: " + ((int) moveDist).ToString ();
 	}
 }

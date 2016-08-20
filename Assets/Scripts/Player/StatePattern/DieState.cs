@@ -19,22 +19,28 @@ public class DieState : PlayerState {
 	void OnEnable ()
 	{
 		anim.SetBool ("isDie", true);
+
 		trackMove.enabled = false;
 
 		StopAllCoroutines ();
+
 		StartCoroutine ("RestartGame");
+
+		InputController.instance.enabled = false;
 	}
 
 	void OnDisable ()
 	{
 		anim.SetBool ("isDie", false);
+
+		InputController.instance.enabled = true;
 	}
 
 	IEnumerator RestartGame ()
-	{		
-		InputController.instance.ClearInputs ();
-
+	{
 		yield return new WaitForSeconds (2f);
+
+		InputController.instance.ClearInputs ();
 
 		player.transform.position = Vector3.zero;
 
